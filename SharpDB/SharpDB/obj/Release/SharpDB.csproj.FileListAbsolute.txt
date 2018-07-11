@@ -1,0 +1,9 @@
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\bin\Release\SharpDB.dll
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\bin\Release\SharpDB.pdb
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\obj\Release\SharpDB.csproj.CoreCompileInputs.cache
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\obj\Release\SharpDB.dll
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\obj\Release\SharpDB.pdb
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\bin\Release\Newtonsoft.Json.dll
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\bin\Release\Newtonsoft.Json.xml
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\obj\Release\SharpDB.csprojResolveAssemblyReference.cache
+A:\Media\dfjdh\Visual Studio 2017\Projects\SharpDB\SharpDB\obj\Release\SharpDB.csproj.CopyComplete
