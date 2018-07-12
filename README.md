@@ -1,6 +1,9 @@
 # SharpDB
-<a href="https://www.nuget.org/packages/SharpDB/">Nuget link</a>
+SharpDB is a lightweight, easy to use, local storage manger created to make it easier to save information between programs.
 
-SharpDB is a lightweight, easy to use, local storage manger
+# Documentation
+Documentation is currently in progress and will be located on this <a href="https://github.com/AlastairPx86/SharpDB/wiki/">repository's wiki</a>
 
-<a href="github.com/AlastairPx86/SharpDB/raw/master/SharpDB/SharpDB/bin/Release/SharpDB.dll">Download here</a>
+# Downloads
+I recommend downloading it with nuget but you can also <a href="https://github.com/AlastairPx86/SharpDB/raw/master/SharpDB/SharpDB/bin/Release/SharpDB.dll">download the libary directly</a>
+<a href="https://www.nuget.org/packages/SharpDB/">Nuget package link</a>
