@@ -34,11 +34,14 @@ namespace SharpDB
         private string db;
         private string dbFolder;
         private string currentDbPath;
+		private string slash;
 
-        public DB(string v)
+        public DB(string path)
         {
-            dbPath = v;
-            dbFolder = dbPath + @"\db";
+			if (IsLinux) slash = "/";
+			else slash = @"\";           
+			dbPath = path;     
+			dbFolder = dbPath + slash + "db";
         }
 
         public void CreateDatabase(string name)
@@ -46,20 +49,20 @@ namespace SharpDB
             //Check if 'db' directory exists, if not: create one
             if (!Directory.Exists(dbFolder)) Directory.CreateDirectory(dbFolder);
             //Check if database exists so we don't overwrite an existing
-            if (Directory.Exists(dbFolder + @"\" + name)) throw new Exception("Database already exists");
+            if (Directory.Exists(dbFolder + slash + name)) throw new Exception("Database already exists");
             else
             {
                 //Create a new folder for the database
-                Directory.CreateDirectory(dbFolder + @"\" + name);
-                File.WriteAllLines(dbFolder + @"\" + name + @"\properties.json", new string[] { "{ name:'" + name +  "',date:'" + DateTime.Now + "',tables:'0'}" });
+                Directory.CreateDirectory(dbFolder + slash + name);
+                File.WriteAllLines(dbFolder + slash + name + slash + "properties.json", new string[] { "{ name:'" + name +  "',date:'" + DateTime.Now + "',tables:'0'}" });
             }
         }
         public void EnterDatabase(string dbName)
         {
-            if (Directory.Exists(dbFolder + @"\" + dbName))
+            if (Directory.Exists(dbFolder + slash + dbName))
             {
                 db = dbName;
-                currentDbPath = dbFolder + @"\" + db;
+                currentDbPath = dbFolder + slash + db;
             }
             else throw new Exception("Database does not exist");
         }
@@ -67,7 +70,7 @@ namespace SharpDB
         {
             if (!string.IsNullOrEmpty(db))
             {
-                if (!File.Exists(currentDbPath + @"\" + tbName + ".sdb"))
+                if (!File.Exists(currentDbPath + slash + tbName + ".sdb"))
                 {
                     string[] conf = { "<name>" + tbName + "</name><culumnLength>" + tbId.Length + "</culumnLength>" };
                     for(int i = 0; i < tbId.Length; i++)
@@ -75,7 +78,7 @@ namespace SharpDB
                         conf[0] += "<tb" + i + ">" + tbId[i] + "</tb" + i + ">";
                     }
 
-                    File.WriteAllLines(currentDbPath + @"\" + tbName + ".sdb", conf);
+                    File.WriteAllLines(currentDbPath + slash + tbName + ".sdb", conf);
                 }
                 else throw new Exception("Table already exists");
             }
@@ -85,9 +88,9 @@ namespace SharpDB
         {
             if (!string.IsNullOrEmpty(db))
             {
-                if (File.Exists(currentDbPath + @"\" + tbName + ".sdb"))
+                if (File.Exists(currentDbPath + slash + tbName + ".sdb"))
                 {
-                    string[] tb = File.ReadAllLines(currentDbPath + @"\" + tbName + ".sdb");
+                    string[] tb = File.ReadAllLines(currentDbPath + slash + tbName + ".sdb");
                     int tbLength = Int32.Parse(ExtractString(tb[0], "culumnLength"));
                     if (tbLength != tbInfo.Length) throw new Exception("Please enter the correct amount of values");
                     else
@@ -102,7 +105,7 @@ namespace SharpDB
                         var linesArr = _lines.ToArray();
                         //Array.Sort(linesArr);
 
-                        File.WriteAllLines(currentDbPath + @"\" + tbName + ".sdb", linesArr);
+                        File.WriteAllLines(currentDbPath + slash + tbName + ".sdb", linesArr);
                         
                     }
                 }
@@ -113,7 +116,7 @@ namespace SharpDB
         public string[] Get(string toGet, string tbName, string[] argName, string[] arg)
         {
             var list = new List<string>();
-            string[] tb = File.ReadAllLines(currentDbPath + @"\" + tbName + ".sdb");
+            string[] tb = File.ReadAllLines(currentDbPath + slash + tbName + ".sdb");
             int columnLength = tb.Length - 1;
             int su = 0;
             for (int i = 1; i <= columnLength; i++)
@@ -134,10 +137,10 @@ namespace SharpDB
         }
         public void DeleteDatabase(string dataName)
         {
-            if (!Directory.Exists(dbFolder + @"\" + dataName)) throw new Exception("Database does not exist");
+            if (!Directory.Exists(dbFolder + slash + dataName)) throw new Exception("Database does not exist");
             else
             {
-                DirectoryInfo di = new DirectoryInfo(dbFolder + @"\" + dataName);
+                DirectoryInfo di = new DirectoryInfo(dbFolder + slash + dataName);
 
                 foreach (FileInfo file in di.GetFiles())
                 {
@@ -147,20 +150,20 @@ namespace SharpDB
                 {
                     dir.Delete(true);
                 }
-                Directory.Delete(dbFolder + @"\" + dataName);
+                Directory.Delete(dbFolder + slash + dataName);
 
             }
         }
         public bool DatabaseExists(string dataName)
         {
-            if (Directory.Exists(dbFolder + @"\" + dataName)) return true;
+            if (Directory.Exists(dbFolder + slash + dataName)) return true;
             else return false;
         }
         public bool TableExists(string dataName, string tableName)
         {
-            if (Directory.Exists(dbFolder + @"\" + dataName))
+            if (Directory.Exists(dbFolder + slash + dataName))
             {
-                if (File.Exists(dbFolder + @"\" + dataName + @"\" + tableName + ".sdb")) return true;
+                if (File.Exists(dbFolder + slash + dataName + slash + tableName + ".sdb")) return true;
                 else return false;
             }
             else return false;
@@ -172,6 +175,14 @@ namespace SharpDB
             int startIndex = s.IndexOf(startTag) + startTag.Length;
             int endIndex = s.IndexOf("</" + tag + ">", startIndex);
             return s.Substring(startIndex, endIndex - startIndex);
+        }
+		private bool IsLinux
+        {
+            get
+            {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
         }
     }
 }
