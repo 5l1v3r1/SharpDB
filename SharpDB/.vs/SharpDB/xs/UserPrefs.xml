@@ -1,15 +1,13 @@
-﻿<Properties StartupConfiguration="{4B7C1E52-C62F-404D-ADD0-6BE08CCF443D}|Default">
-  <MonoDevelop.Ide.ItemProperties.sharpdbLinuxTest PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../../Projects/sharpdbLinuxTest/sharpdbLinuxTest/Program.cs">
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="SharpDB/DB.cs">
     <Files>
-      <File FileName="SharpDB/DB.cs" Line="157" Column="35" />
-      <File FileName="../../../Projects/sharpdbLinuxTest/sharpdbLinuxTest/Program.cs" Line="8" Column="56" />
+      <File FileName="SharpDB/DB.cs" Line="189" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SharpDB" expanded="True">
-            <Node name="sharpdbLinuxTest" selected="True" />
+            <Node name="SharpDB" expanded="True" />
           </Node>
         </State>
       </Pad>
