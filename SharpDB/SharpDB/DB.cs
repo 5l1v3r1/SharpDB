@@ -30,13 +30,15 @@ namespace SharpDB
 {
     public class DB
 	{
-
+        #region Variables and init function
+        #region Variables
         private string dbPath;
         private string db;
         private string dbFolder;
         private string currentDbPath;
 		private string slash;
-
+        #endregion
+        #region Init
         public DB(string path)
         {
 			if (IsLinux) slash = "/";
@@ -44,7 +46,9 @@ namespace SharpDB
 			dbPath = path;     
 			dbFolder = dbPath + slash + "db";
         }
-
+        #endregion
+        #endregion
+        #region Create
         public void CreateDatabase(string name)
         {
             //Check if 'db' directory exists, if not: create one
@@ -96,6 +100,9 @@ namespace SharpDB
             }
             else throw new Exception("No database given (have you run EnterDatabase?)");
         }
+        #endregion
+        #region Insert and get
+        #region Insert
         public void Insert(string tbName, string tbInfoQuery)
         {
             if (!string.IsNullOrEmpty(db))
@@ -127,6 +134,8 @@ namespace SharpDB
             }
             else throw new Exception("No database given (have you run EnterDatabase?)");
         }
+        #endregion
+        #region Get
         public string[] Get(string toGetQuery, string tbName, string argQuery)
         {
 			var argNameList = new List<string>();
@@ -183,6 +192,9 @@ namespace SharpDB
             }
 			return list.ToArray();
         }
+        #endregion
+        #endregion
+        #region Remove functions
         public void DeleteDatabase(string dbName)
         {
             if (!Directory.Exists(dbFolder + slash + dbName)) throw new Exception("Database does not exist");
@@ -202,6 +214,8 @@ namespace SharpDB
 
             }
         }
+        #endregion
+        #region Bool and int functions
         public bool DatabaseExists(string dbName)
         {
             if (Directory.Exists(dbFolder + slash + dbName)) return true;
@@ -229,6 +243,8 @@ namespace SharpDB
 			string[] tb = File.ReadAllLines(dbFolder + slash + dbName + slash + tbName + ".sdb");
 			return tb.Length - 1;
 		}
+        #endregion
+        #region Tools
         private string ExtractString(string s, string tag)
         {
             // You should check for errors in real-world code, omitted for brevity
@@ -245,5 +261,6 @@ namespace SharpDB
                 return (p == 4) || (p == 6) || (p == 128);
             }
         }
+        #endregion
     }
 }

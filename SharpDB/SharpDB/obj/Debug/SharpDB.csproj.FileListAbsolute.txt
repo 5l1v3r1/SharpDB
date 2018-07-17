@@ -15,3 +15,12 @@ A:/Media/dfjdh/Visual Studio 2017/Projects/SharpDB/SharpDB/obj/Debug/SharpDB.csp
 /home/alastairp/Documents/SharpDB/SharpDB/SharpDB/obj/Debug/SharpDB.csproj.CoreCompileInputs.cache
 /home/alastairp/Documents/SharpDB/SharpDB/SharpDB/obj/Debug/SharpDB.dll
 /home/alastairp/Documents/SharpDB/SharpDB/SharpDB/obj/Debug/SharpDB.pdb
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Debug\SharpDB.dll
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Debug\SharpDB.pdb
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Debug\Newtonsoft.Json.dll
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Debug\Newtonsoft.Json.xml
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Debug\SharpDB.csprojResolveAssemblyReference.cache
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Debug\SharpDB.csproj.CoreCompileInputs.cache
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Debug\SharpDB.csproj.CopyComplete
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Debug\SharpDB.dll
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Debug\SharpDB.pdb

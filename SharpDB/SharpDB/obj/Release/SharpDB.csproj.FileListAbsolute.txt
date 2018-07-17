@@ -15,3 +15,12 @@ A:/Media/dfjdh/Visual Studio 2017/Projects/SharpDB/SharpDB/obj/Release/SharpDB.c
 /home/alastairp/Documents/SharpDB/SharpDB/SharpDB/obj/Release/SharpDB.csproj.CoreCompileInputs.cache
 /home/alastairp/Documents/SharpDB/SharpDB/SharpDB/obj/Release/SharpDB.dll
 /home/alastairp/Documents/SharpDB/SharpDB/SharpDB/obj/Release/SharpDB.pdb
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Release\SharpDB.dll
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Release\SharpDB.pdb
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Release\Newtonsoft.Json.dll
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\bin\Release\Newtonsoft.Json.xml
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Release\SharpDB.csprojResolveAssemblyReference.cache
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Release\SharpDB.csproj.CoreCompileInputs.cache
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Release\SharpDB.csproj.CopyComplete
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Release\SharpDB.dll
+A:\Media\dfjdh\SharpDB\SharpDB\SharpDB\obj\Release\SharpDB.pdb
