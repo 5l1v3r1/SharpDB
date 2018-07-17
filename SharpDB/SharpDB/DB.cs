@@ -29,7 +29,8 @@ using Newtonsoft.Json;
 namespace SharpDB
 {
     public class DB
-    {
+	{
+
         private string dbPath;
         private string db;
         private string dbFolder;
@@ -66,30 +67,43 @@ namespace SharpDB
             }
             else throw new Exception("Database does not exist");
         }
-        public void CreateTable(string tbName, string[] tbId)
+        public void CreateTable(string tbName, string tbIdQuery)
         {
             if (!string.IsNullOrEmpty(db))
             {
                 if (!File.Exists(currentDbPath + slash + tbName + ".sdb"))
                 {
+					string[] tbId = tbIdQuery.Split(';');
+
                     string[] conf = { "<name>" + tbName + "</name><culumnLength>" + tbId.Length + "</culumnLength>" };
                     for(int i = 0; i < tbId.Length; i++)
                     {
                         conf[0] += "<tb" + i + ">" + tbId[i] + "</tb" + i + ">";
                     }
-
+                    
                     File.WriteAllLines(currentDbPath + slash + tbName + ".sdb", conf);
+                    
+					string[] prop = File.ReadAllLines(currentDbPath + slash + "properties.json");
+					dynamic propJson = JsonConvert.DeserializeObject(prop[0]);
+
+					string tabNum = propJson.tables;
+					propJson.tables = Int32.Parse(tabNum) + 1;
+					prop[0] = JsonConvert.SerializeObject(propJson);
+
+					File.WriteAllLines(currentDbPath + slash + "properties.json", prop);
                 }
                 else throw new Exception("Table already exists");
             }
             else throw new Exception("No database given (have you run EnterDatabase?)");
         }
-        public void Insert(string tbName, string[] tbInfo)
+        public void Insert(string tbName, string tbInfoQuery)
         {
             if (!string.IsNullOrEmpty(db))
             {
                 if (File.Exists(currentDbPath + slash + tbName + ".sdb"))
                 {
+					string[] tbInfo = tbInfoQuery.Split(';');
+
                     string[] tb = File.ReadAllLines(currentDbPath + slash + tbName + ".sdb");
                     int tbLength = Int32.Parse(ExtractString(tb[0], "culumnLength"));
                     if (tbLength != tbInfo.Length) throw new Exception("Please enter the correct amount of values");
@@ -113,11 +127,38 @@ namespace SharpDB
             }
             else throw new Exception("No database given (have you run EnterDatabase?)");
         }
-        public string[] Get(string toGet, string tbName, string[] argName, string[] arg)
+        public string[] Get(string toGetQuery, string tbName, string argQuery)
         {
+			var argNameList = new List<string>();
+			var argInfoList = new List<string>();
+
+			string[] argArr = argQuery.Split(';');
+			if (!string.IsNullOrEmpty(argQuery))
+			{
+				for (int i = 0; i < argArr.Length; i++)
+				{
+					string[] splitter = argArr[i].Split('=');
+					argNameList.Add(splitter[0]);
+					argInfoList.Add(splitter[1]);
+				}
+			}
+
+			string[] argName = argNameList.ToArray();
+			string[] arg = argInfoList.ToArray();
+			string[] toGet = toGetQuery.Split(';');
+
             var list = new List<string>();
             string[] tb = File.ReadAllLines(currentDbPath + slash + tbName + ".sdb");
             int columnLength = tb.Length - 1;
+
+			if(toGet[0] == "[ALL]"){
+				var allList = new List<string>();
+				for (int c = 0; c <= columnLength; c++){
+					allList.Add(ExtractString(tb[0], "tb" + c.ToString()));
+				}
+				toGet = allList.ToArray();
+			}
+
             int su = 0;
             for (int i = 1; i <= columnLength; i++)
             {
@@ -128,19 +169,26 @@ namespace SharpDB
                     else break;
                     
                 }
-                if (su == argName.Length) list.Add(ExtractString(tb[i], toGet));
+				if (su == argName.Length)
+				{
+					for (int d = 0; d < toGet.Length; d++)
+					{
+						list.Add(ExtractString(tb[i], toGet[d]));
+					}
+					
+					
+				}
                 su = 0;
 
             }
-            var listArr = list.ToArray();
-            return listArr;
+			return list.ToArray();
         }
-        public void DeleteDatabase(string dataName)
+        public void DeleteDatabase(string dbName)
         {
-            if (!Directory.Exists(dbFolder + slash + dataName)) throw new Exception("Database does not exist");
+            if (!Directory.Exists(dbFolder + slash + dbName)) throw new Exception("Database does not exist");
             else
             {
-                DirectoryInfo di = new DirectoryInfo(dbFolder + slash + dataName);
+                DirectoryInfo di = new DirectoryInfo(dbFolder + slash + dbName);
 
                 foreach (FileInfo file in di.GetFiles())
                 {
@@ -150,24 +198,37 @@ namespace SharpDB
                 {
                     dir.Delete(true);
                 }
-                Directory.Delete(dbFolder + slash + dataName);
+                Directory.Delete(dbFolder + slash + dbName);
 
             }
         }
-        public bool DatabaseExists(string dataName)
+        public bool DatabaseExists(string dbName)
         {
-            if (Directory.Exists(dbFolder + slash + dataName)) return true;
+            if (Directory.Exists(dbFolder + slash + dbName)) return true;
             else return false;
         }
-        public bool TableExists(string dataName, string tableName)
+        public bool TableExists(string dbName, string tableName)
         {
-            if (Directory.Exists(dbFolder + slash + dataName))
+            if (Directory.Exists(dbFolder + slash + dbName))
             {
-                if (File.Exists(dbFolder + slash + dataName + slash + tableName + ".sdb")) return true;
+                if (File.Exists(dbFolder + slash + dbName + slash + tableName + ".sdb")) return true;
                 else return false;
             }
             else return false;
         }
+		public int CountTables(string dbName){
+			if (!DatabaseExists(dbName)) throw new Exception("Database does not exist");
+			string[] tb = File.ReadAllLines(dbFolder + slash + dbName + slash + "properties.json");
+			dynamic json = JsonConvert.DeserializeObject(tb[0]);
+			string tbCount = json.tables;
+			return Int32.Parse(tbCount);
+            
+		}
+		public int TableLength(string dbName, string tbName){
+			if (!TableExists(dbName, tbName)) throw new Exception("Table or database does not exist");
+			string[] tb = File.ReadAllLines(dbFolder + slash + dbName + slash + tbName + ".sdb");
+			return tb.Length - 1;
+		}
         private string ExtractString(string s, string tag)
         {
             // You should check for errors in real-world code, omitted for brevity

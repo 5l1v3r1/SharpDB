@@ -1,17 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="SharpDB/DB.cs">
     <Files>
-      <File FileName="SharpDB/DB.cs" Line="189" Column="1" />
+      <File FileName="SharpDB/DB.cs" Line="168" Column="4" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="SharpDB" expanded="True">
-            <Node name="SharpDB" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
