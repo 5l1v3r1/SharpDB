@@ -24,6 +24,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace SharpDB
@@ -111,23 +112,24 @@ namespace SharpDB
                 {
 					string[] tbInfo = tbInfoQuery.Split(';');
 
-                    string[] tb = File.ReadAllLines(currentDbPath + slash + tbName + ".sdb");
-                    int tbLength = Int32.Parse(ExtractString(tb[0], "culumnLength"));
+                    string tb = File.ReadAllLines(currentDbPath + slash + tbName + ".sdb").Skip(0).Take(1).First();
+                    int tbLength = Int32.Parse(ExtractString(tb, "culumnLength"));
                     if (tbLength != tbInfo.Length) throw new Exception("Please enter the correct amount of values");
                     else
                     {
-                        var _lines = new List<string>(tb);
+                        var _lines = new List<string>();//tb
                         string lineout = "";
                         for(int i = 0; i < tbLength; i++)
                         {
-                            lineout += "<" + ExtractString(tb[0], "tb" + i) + ">" + tbInfo[i] + "</" + ExtractString(tb[0], "tb" + i) + ">";
+                            lineout += "<" + ExtractString(tb, "tb" + i) + ">" + tbInfo[i] + "</" + ExtractString(tb, "tb" + i) + ">";
                         }
                         _lines.Add(lineout);
                         var linesArr = _lines.ToArray();
                         //Array.Sort(linesArr);
 
-                        File.WriteAllLines(currentDbPath + slash + tbName + ".sdb", linesArr);
-                        
+                        //File.WriteAllLines(currentDbPath + slash + tbName + ".sdb", linesArr);
+                        File.AppendAllLines(currentDbPath + slash + tbName + ".sdb", linesArr);
+
                     }
                 }
                 else throw new Exception("Table does not exist!");
@@ -194,6 +196,50 @@ namespace SharpDB
         }
         #endregion
         #endregion
+        #region Save and load
+        #region Save
+        public void Save(string varName, string varInfo)
+        {
+            if (!DatabaseExists("QuickSave")) CreateDatabase("QuickSave");
+            string oldDB = db;
+            EnterDatabase("QuickSave");
+            if (!TableExists("QuickSave", "Table")) CreateTable("Table", "Name;Info");
+            if (Get("Name", "Table", "Name=" + varName).Length > 0)
+            {
+                if (!string.IsNullOrEmpty(oldDB)) EnterDatabase(oldDB);
+                throw new Exception("Variable already exists");
+            }
+            else
+            {
+                Insert("Table", varName + ";" + varInfo);
+            }
+            if (!string.IsNullOrEmpty(oldDB)) EnterDatabase(oldDB);
+        }
+        #endregion
+        #region Load
+        public string Load(string varName)
+        {
+            if (!DatabaseExists("QuickSave")) throw new Exception("Variable does not exist");
+            else if (!TableExists("QuickSave", "Table")) throw new Exception("Variable does not exist");
+            else
+            {
+                string oldDB = db;
+                EnterDatabase("QuickSave");
+                if (Get("Name", "Table", "Name=" + varName).Length == 0)
+                {
+                    if (!string.IsNullOrEmpty(oldDB)) EnterDatabase(oldDB);
+                    throw new Exception("Variable does not exist");
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(oldDB)) EnterDatabase(oldDB);
+                    return Get("Info", "Table", "Name=" + varName)[0];
+                }
+            }
+            
+        }
+        #endregion
+        #endregion
         #region Remove functions
         public void DeleteDatabase(string dbName)
         {
@@ -245,6 +291,25 @@ namespace SharpDB
 		}
         #endregion
         #region Tools
+        public string GetCurrentDB()
+        {
+            return db;
+        }
+        public string[] GetDatabases()
+        {
+            var TrueDBlist = new List<string>();
+            string[] dirs = Directory.GetDirectories(dbFolder);
+            for (int i = 0; i < Directory.GetDirectories(dbFolder).Length; i++)
+            {
+                string curTestDB = dbFolder + slash + dirs[i];
+                if(File.Exists(curTestDB + slash + "properties.json"))
+                {
+                    string[] file = File.ReadAllLines(curTestDB + slash + "properties.json");
+                    if (file[0].Contains("\"name\":") && file[0].Contains("\"date\":") && file[0].Contains("\"tables\":")) TrueDBlist.Add(dirs[i]);
+                }
+            }
+            return TrueDBlist.ToArray();
+        }
         private string ExtractString(string s, string tag)
         {
             // You should check for errors in real-world code, omitted for brevity
